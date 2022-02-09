@@ -1,6 +1,6 @@
 import { useAuthContext } from "@asgardeo/auth-react";
 import React, { useEffect, useState } from "react";
-import { authConfig } from "../Config";
+import { authConfig, APP_NAME } from "../Config";
 import Main from "../components/Main";
 import Default from "../layouts/Default";
 import { Button } from "@mui/material";
@@ -133,14 +133,6 @@ const HomePage = () => {
         {state.isAuthenticated ? (
           <div className="content">
             <Main derivedResponse={derivedAuthenticationState} />
-            <button
-              className="btn primary mt-4"
-              onClick={() => {
-                handleLogout();
-              }}
-            >
-              Logout
-            </button>
           </div>
         ) : (
           <div className={classes.pageStyle}>
@@ -176,12 +168,13 @@ const HomePage = () => {
                           ></img>
                         </Grid>
                         <Grid item xs={12} sx={{ pb: 2 }}>
-                          <Typography variant="h4">Asgardeo Auth</Typography>
+                          <Typography variant="h4">{APP_NAME}</Typography>
                         </Grid>
                         {/* Handle Error authenticationError */}
                         <Grid item xs={12}>
                           <Button
                             variant="contained"
+                            color="secondary"
                             onClick={() => {
                               handleLogin();
                             }}
