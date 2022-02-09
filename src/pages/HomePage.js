@@ -5,6 +5,7 @@ import Main from "../components/Main";
 import Default from "../layouts/Default";
 import { Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import axios from "axios";
 
 import {
   Box,
@@ -42,6 +43,7 @@ const HomePage = () => {
   const [derivedAuthenticationState, setDerivedAuthenticationState] =
     useState(null);
   const [hasAuthenticationErrors, setHasAuthenticationErrors] = useState(false);
+  const [apimTokenObj, setApimTokenObj] = useState(null);
 
   useEffect(() => {
     if (!state?.isAuthenticated) {
@@ -61,8 +63,42 @@ const HomePage = () => {
       };
 
       setDerivedAuthenticationState(derivedState);
+      await getAPIMToken(idToken);
     })();
   }, [state.isAuthenticated]);
+
+  const getAPIMToken = async (idToken) => {
+    let headers = {
+      Authorization:
+        "Basic " +
+        btoa(
+          `${process.env.REACT_APP_APIM_IDP_CLIENT_ID}:${process.env.REACT_APP_APIM_IDP_CLIENT_SECRET}`
+        ),
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Access-Control-Allow-Origin": "*",
+    };
+    let grantType =
+      encodeURIComponent("grant_type") +
+      "=" +
+      encodeURIComponent("urn:ietf:params:oauth:grant-type:jwt-bearer");
+    let assertion =
+      encodeURIComponent("assertion") + "=" + encodeURIComponent(idToken);
+
+    let formBody = [grantType, assertion];
+
+    await axios({
+      method: "post",
+      url: process.env.REACT_APP_APIM_TOKEN_ENDPOINT,
+      headers: headers,
+      data: formBody.join("&"),
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
 
   const handleLogin = () => {
     signIn().catch(() => setHasAuthenticationErrors(true));
