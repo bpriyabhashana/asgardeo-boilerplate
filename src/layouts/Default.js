@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import FOOTER_LOGOS from "../images/footer.png";
+import AuthError from "../pages/AuthError";
 import {
   Box,
   Button,
@@ -26,7 +27,7 @@ const useStyle = makeStyles(() => ({
 
 const Default = (props) => {
   const classes = useStyle();
-  const { children, isLoading, hasErrors } = props;
+  const { children, isLoading, isApimToken, hasErrors } = props;
   return (
     <div>
       {isLoading ? (
@@ -44,9 +45,23 @@ const Default = (props) => {
           <img width="60" src={FOOTER_LOGOS} className="footer-image" />
         </div>
       ) : hasErrors ? (
-        <div className="content">An error occured while authenticating ...</div>
-      ) : (
+        <AuthError />
+      ) : isApimToken ? (
         children
+      ) : (
+        <div className={classes.pageStyle}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              justifyContent: "center",
+            }}
+          >
+            Waiting for APIM Token...
+          </Box>
+          <img width="60" src={FOOTER_LOGOS} className="footer-image" />
+        </div>
       )}
     </div>
   );

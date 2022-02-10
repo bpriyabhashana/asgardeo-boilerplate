@@ -48,6 +48,7 @@ const HomePage = () => {
     useState(null);
   const [hasAuthenticationErrors, setHasAuthenticationErrors] = useState(false);
   const [apimTokenObj, setApimTokenObj] = useState(null);
+  const [apimReq, setapimReq] = useState(false);
 
   useEffect(() => {
     if (!state?.isAuthenticated) {
@@ -68,10 +69,10 @@ const HomePage = () => {
 
       setDerivedAuthenticationState(derivedState);
 
-      // setTimeout(() => {
-      //   getAPIMToken(idToken);
-      // }, 5000);
-      getAPIMToken(idToken);
+      setTimeout(() => {
+        getAPIMToken(idToken);
+      }, 5000);
+      // getAPIMToken(idToken);
     })();
   }, [state.isAuthenticated]);
 
@@ -101,9 +102,11 @@ const HomePage = () => {
     })
       .then((response) => {
         console.log(response);
+        setapimReq(true);
       })
       .catch((e) => {
         console.error(e);
+        setHasAuthenticationErrors(true);
       });
   };
 
@@ -136,7 +139,11 @@ const HomePage = () => {
   }
   return (
     <>
-      <Default isLoading={state.isLoading} hasErrors={hasAuthenticationErrors}>
+      <Default
+        isLoading={state.isLoading}
+        isApimToken={apimReq}
+        hasErrors={hasAuthenticationErrors}
+      >
         {state.isAuthenticated ? (
           <div className="content">
             <BrowserRouter>
