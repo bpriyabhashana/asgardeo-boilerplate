@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,6 +13,7 @@ import {
   ListItemText,
   Divider,
   ListItemIcon,
+  experimentalStyled,
 } from "@mui/material";
 import { ChevronLeft, AccountCircle } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -23,6 +24,32 @@ import { useAuthContext } from "@asgardeo/auth-react";
 import logo from "../images/logo.png";
 import { APP_NAME, PAGES } from "../Config";
 import NavigationDrawer from "./NavigationDrawer";
+import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
+import ChildComponent from "./ChildComponent";
+import NotFound from "../pages/NotFound";
+import ChildComponent2 from "./ChildComponent2";
+
+const MainLayoutRoot = experimentalStyled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
+  display: "flex",
+  height: "100%",
+  overflow: "hidden",
+  width: "100%",
+}));
+
+const MainLayoutWrapper = experimentalStyled("div")(({ theme }) => ({
+  display: "flex",
+  flex: "1 1 auto",
+  overflow: "hidden",
+  paddingTop: 64,
+}));
+
+const MainLayoutContainer = experimentalStyled("div")({
+  display: "flex",
+  flex: "1 1 auto",
+  overflow: "hidden",
+  padding: 20,
+});
 
 const Main = (props) => {
   const {
@@ -37,7 +64,7 @@ const Main = (props) => {
   const [open, setOpen] = useState(false);
   const [hoverActive, setHoverActive] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [page, setPage] = useState(PAGES.FLASH_URL);
+  const [page, setPage] = useState(PAGES.PAGE_ONE);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -53,6 +80,10 @@ const Main = (props) => {
 
   const openPopover = Boolean(anchorEl);
   const id = openPopover ? "popover" : undefined;
+
+  useEffect(() => {
+    setPage(props.page);
+  }, [props.page]);
 
   const handleDrawerToggle = () => {
     if (open) {
@@ -85,9 +116,10 @@ const Main = (props) => {
       setOpen(false);
     }
   };
+
   return (
-    <div>
-      <AppBar position="fixed" style={{ zIndex: "1300" }}>
+    <MainLayoutRoot>
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -199,13 +231,45 @@ const Main = (props) => {
           </Grid>
         </Toolbar>
       </AppBar>
-      <div
-        onMouseOver={handleDrawerHoverOver}
-        onMouseOut={handleDrawerHoverOut}
-      >
-        <NavigationDrawer open={open} handleDrawerClose={handleDrawerClose} />
-      </div>
-    </div>
+      <MainLayoutWrapper>
+        <div
+          onMouseOver={handleDrawerHoverOver}
+          onMouseOut={handleDrawerHoverOut}
+        >
+          <NavigationDrawer
+            open={open}
+            page={page}
+            handleDrawerClose={handleDrawerClose}
+          />
+        </div>
+        <MainLayoutContainer>
+          <main>
+            <Switch>
+              <Route
+                exact
+                path={PAGES.PAGE_ONE}
+                render={({ match, location, history }) => {
+                  return <ChildComponent />;
+                }}
+              />
+              <Route
+                exact
+                path={PAGES.PAGE_TWO}
+                render={({ match, location, history }) => {
+                  return <ChildComponent2 />;
+                }}
+              />
+              <Redirect
+                exact
+                from={PAGES.CHILD_COMPONENT}
+                to={PAGES.PAGE_ONE}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </main>
+        </MainLayoutContainer>
+      </MainLayoutWrapper>
+    </MainLayoutRoot>
   );
 };
 

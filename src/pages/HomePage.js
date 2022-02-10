@@ -6,6 +6,10 @@ import Default from "../layouts/Default";
 import { Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
+import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
+
+import { PAGES } from "../Config";
+import NotFound from "./NotFound";
 
 import {
   Box,
@@ -63,7 +67,11 @@ const HomePage = () => {
       };
 
       setDerivedAuthenticationState(derivedState);
-      await getAPIMToken(idToken);
+
+      // setTimeout(() => {
+      //   getAPIMToken(idToken);
+      // }, 5000);
+      getAPIMToken(idToken);
     })();
   }, [state.isAuthenticated]);
 
@@ -75,7 +83,6 @@ const HomePage = () => {
           `${process.env.REACT_APP_APIM_IDP_CLIENT_ID}:${process.env.REACT_APP_APIM_IDP_CLIENT_SECRET}`
         ),
       "Content-Type": "application/x-www-form-urlencoded",
-      "Access-Control-Allow-Origin": "*",
     };
     let grantType =
       encodeURIComponent("grant_type") +
@@ -132,7 +139,23 @@ const HomePage = () => {
       <Default isLoading={state.isLoading} hasErrors={hasAuthenticationErrors}>
         {state.isAuthenticated ? (
           <div className="content">
-            <Main derivedResponse={derivedAuthenticationState} />
+            <BrowserRouter>
+              <Switch>
+                <Route
+                  path={PAGES.CHILD_COMPONENT}
+                  render={({ match, location, history }) => {
+                    return (
+                      <Main
+                        page={location.pathname}
+                        derivedResponse={derivedAuthenticationState}
+                      />
+                    );
+                  }}
+                />
+                <Redirect exact from="/" to={PAGES.CHILD_COMPONENT} />
+                <Route component={NotFound} />
+              </Switch>
+            </BrowserRouter>
           </div>
         ) : (
           <div className={classes.pageStyle}>

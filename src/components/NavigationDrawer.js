@@ -18,7 +18,29 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
+import { PAGES, NAV_LIST } from "../Config";
+import { NavLink } from "react-router-dom";
+import NavItem from "./NavItem";
+
 const drawerWidth = 240;
+
+const items = [
+  {
+    href: PAGES.PAGE_ONE,
+    icon: () => <InboxIcon />,
+    title: "Home",
+  },
+  {
+    href: PAGES.PAGE_TWO,
+    icon: () => <MailIcon />,
+    title: "Collections",
+  },
+  // {
+  //   href: "",
+  //   icon: () => <HeartIcon />,
+  //   title: "Favourites",
+  // },
+];
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -105,7 +127,7 @@ export default function NavigationDrawer(props) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} style={{ zIndex: "100" }}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
@@ -116,27 +138,21 @@ export default function NavigationDrawer(props) {
           </IconButton>
         </DrawerHeader>
         <Divider />
+
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {items.map((item, index) => {
+            return (
+              <NavItem
+                selected={props.page && props.page.startsWith(item.href)}
+                href={item.href}
+                key={item.title}
+                title={item.title}
+                icon={item.icon}
+              />
+            );
+          })}
         </List>
         <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
     </Box>
   );
