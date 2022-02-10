@@ -46,22 +46,8 @@ const Default = (props) => {
         </div>
       ) : hasErrors ? (
         <AuthError />
-      ) : isApimToken ? (
-        children
       ) : (
-        <div className={classes.pageStyle}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              justifyContent: "center",
-            }}
-          >
-            Waiting for APIM Token...
-          </Box>
-          <img width="60" src={FOOTER_LOGOS} className="footer-image" />
-        </div>
+        children
       )}
     </div>
   );

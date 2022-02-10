@@ -5,6 +5,7 @@ import { authConfig } from "./Config";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
+import ApimTokenStore from "./store/ApimTokenStore";
 
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
@@ -13,12 +14,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider config={authConfig}>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" component={HomePage} />
-            <Route component={NotFound} />
-          </Switch>
-        </BrowserRouter>
+        <ApimTokenStore>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" component={HomePage} />
+              <Route component={NotFound} />
+            </Switch>
+          </BrowserRouter>
+        </ApimTokenStore>
       </AuthProvider>
     </ThemeProvider>
   );

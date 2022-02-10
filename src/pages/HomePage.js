@@ -1,5 +1,5 @@
 import { useAuthContext } from "@asgardeo/auth-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { authConfig, APP_NAME } from "../Config";
 import Main from "../components/Main";
 import Default from "../layouts/Default";
@@ -10,6 +10,8 @@ import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 
 import { PAGES } from "../Config";
 import NotFound from "./NotFound";
+import { Context } from "../store/ApimTokenStore";
+import FOOTER_LOGOS from "../images/footer.png";
 
 import {
   Box,
@@ -30,6 +32,14 @@ const useStyle = makeStyles(() => ({
     verticalAlign: "middle",
     backgroundColor: "rgb(244, 246, 248)",
   },
+  loadingpageStyle: {
+    width: "100vw",
+    height: "95vh",
+    display: "table-cell",
+    textAlign: "center",
+    verticalAlign: "middle",
+    // backgroundColor: "rgb(244, 246, 248)",
+  },
 }));
 
 const HomePage = () => {
@@ -47,7 +57,7 @@ const HomePage = () => {
   const [derivedAuthenticationState, setDerivedAuthenticationState] =
     useState(null);
   const [hasAuthenticationErrors, setHasAuthenticationErrors] = useState(false);
-  const [apimTokenObj, setApimTokenObj] = useState(null);
+  const [apimTokenObj, setApimTokenObj] = useContext(Context);
   const [apimReq, setapimReq] = useState(false);
 
   useEffect(() => {
@@ -101,7 +111,7 @@ const HomePage = () => {
       data: formBody.join("&"),
     })
       .then((response) => {
-        console.log(response);
+        setApimTokenObj(response.data);
         setapimReq(true);
       })
       .catch((e) => {
@@ -115,6 +125,7 @@ const HomePage = () => {
   };
 
   const handleLogout = () => {
+    setapimReq();
     signOut();
   };
 
@@ -152,10 +163,32 @@ const HomePage = () => {
                   path={PAGES.CHILD_COMPONENT}
                   render={({ match, location, history }) => {
                     return (
-                      <Main
-                        page={location.pathname}
-                        derivedResponse={derivedAuthenticationState}
-                      />
+                      <>
+                        {apimTokenObj ? (
+                          <Main
+                            page={location.pathname}
+                            derivedResponse={derivedAuthenticationState}
+                          />
+                        ) : (
+                          <div className={classes.loadingpageStyle}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                height: "100%",
+                                justifyContent: "center",
+                              }}
+                            >
+                              Waiting for APIM token ...
+                            </Box>
+                            <img
+                              width="60"
+                              src={FOOTER_LOGOS}
+                              className="footer-image"
+                            />
+                          </div>
+                        )}
+                      </>
                     );
                   }}
                 />
