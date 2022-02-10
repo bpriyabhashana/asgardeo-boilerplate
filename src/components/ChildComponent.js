@@ -1,7 +1,7 @@
 import React from "react";
 
 const ChildComponent = () => {
-  return <div>hsabdjashbdhjsad</div>;
+  return <div>Home page content</div>;
 };
 
 export default ChildComponent;
