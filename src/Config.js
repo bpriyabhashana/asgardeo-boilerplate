@@ -10,9 +10,9 @@ export const authConfig = {
 
 export const PAGES = {
   BASE_URL: "/",
-  CHILD_COMPONENT: "/finance-mis",
-  PAGE_ONE: "/finance-mis/flash-dashboard",
-  PAGE_TWO: "/finance-mis/flash-report",
+  CHILD_COMPONENT: "/dashboard",
+  PAGE_ONE: "/dashboard/home",
+  PAGE_TWO: "/dashboard/collection",
 };
 
 export const NAV_LIST = {

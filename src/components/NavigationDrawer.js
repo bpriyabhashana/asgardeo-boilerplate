@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import { Collapse } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -21,6 +22,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import { PAGES, NAV_LIST } from "../Config";
 import { NavLink } from "react-router-dom";
 import NavItem from "./NavItem";
+
+import FOOTER_LOGOS from "../images/footer.png";
 
 const drawerWidth = 240;
 
@@ -153,6 +156,24 @@ export default function NavigationDrawer(props) {
           })}
         </List>
         <Divider />
+        <Box sx={{ flexGrow: 1 }} />
+        <Collapse
+          in={open}
+          orientation="horizontal"
+          classes={{ wrapperInner: { width: "100%" } }}
+          timeout={2}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              pt: 2,
+              mb: 2,
+            }}
+          >
+            <img width="40" src={FOOTER_LOGOS} className="footer-image" />
+          </Box>
+        </Collapse>
       </Drawer>
     </Box>
   );
