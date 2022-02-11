@@ -11,7 +11,7 @@ import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 import { PAGES } from "../Config";
 import NotFound from "./NotFound";
 import { Context } from "../store/ApimTokenStore";
-import FOOTER_LOGOS from "../images/footer.png";
+import LoadingScreen from "../components/LoadingScreen";
 
 import {
   Box,
@@ -170,23 +170,9 @@ const HomePage = () => {
                             derivedResponse={derivedAuthenticationState}
                           />
                         ) : (
-                          <div className={classes.loadingpageStyle}>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                height: "100%",
-                                justifyContent: "center",
-                              }}
-                            >
-                              Waiting for APIM token ...
-                            </Box>
-                            <img
-                              width="60"
-                              src={FOOTER_LOGOS}
-                              className="footer-image"
-                            />
-                          </div>
+                          <LoadingScreen
+                            message={"Waiting for APIM token ..."}
+                          />
                         )}
                       </>
                     );

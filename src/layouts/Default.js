@@ -13,6 +13,8 @@ import {
   Typography,
 } from "@mui/material";
 
+import LoadingScreen from "../components/LoadingScreen";
+
 const useStyle = makeStyles(() => ({
   pageStyle: {
     width: "100vw",
@@ -31,19 +33,7 @@ const Default = (props) => {
   return (
     <div>
       {isLoading ? (
-        <div className={classes.pageStyle}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              justifyContent: "center",
-            }}
-          >
-            Loading ...
-          </Box>
-          <img width="60" src={FOOTER_LOGOS} className="footer-image" />
-        </div>
+        <LoadingScreen message={"Loading..."} />
       ) : hasErrors ? (
         <AuthError />
       ) : (
