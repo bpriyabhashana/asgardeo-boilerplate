@@ -79,10 +79,10 @@ const HomePage = () => {
 
       setDerivedAuthenticationState(derivedState);
 
-      setTimeout(() => {
-        getAPIMToken(idToken);
-      }, 5000);
-      // getAPIMToken(idToken);
+      // setTimeout(() => {
+      //   getAPIMToken(idToken);
+      // }, 5000);
+      getAPIMToken(idToken);
     })();
   }, [state.isAuthenticated]);
 

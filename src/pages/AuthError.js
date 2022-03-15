@@ -2,16 +2,8 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import FOOTER_LOGOS from "../images/footer.png";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 
 const useStyle = makeStyles(() => ({
   pageStyle: {
@@ -26,8 +18,13 @@ const useStyle = makeStyles(() => ({
 }));
 
 const AuthError = () => {
+  const { signOut } = useAuthContext();
+
+  const handleLogout = () => {
+    signOut();
+  };
+
   const classes = useStyle();
-  const history = useHistory();
   return (
     <div className={classes.pageStyle}>
       <Box
@@ -64,6 +61,16 @@ const AuthError = () => {
                   You are facing an error while authenticating. Please retry
                   later or contact administration
                 </Typography>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  className="btn primary"
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                >
+                  Retry
+                </Button>
               </Grid>
             </Grid>
           </Box>

@@ -1,4 +1,4 @@
-# Add below variables to .env filke that created in root
+# Add below variables to .env file that created in root
 
 REACT_APP_BASE_URL=
 REACT_APP_ASGARDEO_CLIENT_ID=
