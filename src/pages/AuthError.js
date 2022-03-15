@@ -2,16 +2,8 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import FOOTER_LOGOS from "../images/footer.png";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 
 const useStyle = makeStyles(() => ({
   pageStyle: {
@@ -25,9 +17,14 @@ const useStyle = makeStyles(() => ({
   },
 }));
 
-const NotFound = () => {
+const AuthError = () => {
+  const { signOut } = useAuthContext();
+
+  const handleLogout = () => {
+    signOut();
+  };
+
   const classes = useStyle();
-  const history = useHistory();
   return (
     <div className={classes.pageStyle}>
       <Box
@@ -53,7 +50,7 @@ const NotFound = () => {
             >
               <Grid item xs={12}>
                 <Typography align="center" color="textPrimary" variant="h1">
-                  404: The page you are looking for isn’t here
+                  Error: An error occured while authenticating
                 </Typography>
                 <Typography
                   align="center"
@@ -61,21 +58,20 @@ const NotFound = () => {
                   variant="subtitle2"
                   gutterBottom
                 >
-                  You either tried a questionable route or you came here by
-                  mistake. Whichever it is, try using the navigation or click
-                  the button below.
+                  You are facing an error while authenticating. Please retry
+                  later or contact administration
                 </Typography>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  className="btn primary"
+                  onClick={() => {
+                    handleLogout();
+                  }}
+                >
+                  Retry
+                </Button>
               </Grid>
-              <Button
-                size="small"
-                variant="outlined"
-                className="btn primary"
-                onClick={() => {
-                  history.push("/");
-                }}
-              >
-                Go back to home
-              </Button>
             </Grid>
           </Box>
         </Container>
@@ -86,4 +82,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default AuthError;

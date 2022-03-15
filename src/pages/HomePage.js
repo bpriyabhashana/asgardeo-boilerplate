@@ -1,11 +1,17 @@
 import { useAuthContext } from "@asgardeo/auth-react";
-import React, { useEffect, useState } from "react";
-import { authConfig } from "../Config";
+import React, { useEffect, useState, useContext } from "react";
+import { authConfig, APP_NAME } from "../Config";
 import Main from "../components/Main";
 import Default from "../layouts/Default";
 import { Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
+import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
+
+import { PAGES } from "../Config";
+import NotFound from "./NotFound";
+import { Context } from "../store/ApimTokenStore";
+import LoadingScreen from "../components/LoadingScreen";
 
 import {
   Box,
@@ -26,6 +32,14 @@ const useStyle = makeStyles(() => ({
     verticalAlign: "middle",
     backgroundColor: "rgb(244, 246, 248)",
   },
+  loadingpageStyle: {
+    width: "100vw",
+    height: "95vh",
+    display: "table-cell",
+    textAlign: "center",
+    verticalAlign: "middle",
+    // backgroundColor: "rgb(244, 246, 248)",
+  },
 }));
 
 const HomePage = () => {
@@ -43,7 +57,8 @@ const HomePage = () => {
   const [derivedAuthenticationState, setDerivedAuthenticationState] =
     useState(null);
   const [hasAuthenticationErrors, setHasAuthenticationErrors] = useState(false);
-  const [apimTokenObj, setApimTokenObj] = useState(null);
+  const [apimTokenObj, setApimTokenObj] = useContext(Context);
+  const [apimReq, setapimReq] = useState(false);
 
   useEffect(() => {
     if (!state?.isAuthenticated) {
@@ -63,7 +78,11 @@ const HomePage = () => {
       };
 
       setDerivedAuthenticationState(derivedState);
-      await getAPIMToken(idToken);
+
+      // setTimeout(() => {
+      //   getAPIMToken(idToken);
+      // }, 5000);
+      getAPIMToken(idToken);
     })();
   }, [state.isAuthenticated]);
 
@@ -75,7 +94,6 @@ const HomePage = () => {
           `${process.env.REACT_APP_APIM_IDP_CLIENT_ID}:${process.env.REACT_APP_APIM_IDP_CLIENT_SECRET}`
         ),
       "Content-Type": "application/x-www-form-urlencoded",
-      "Access-Control-Allow-Origin": "*",
     };
     let grantType =
       encodeURIComponent("grant_type") +
@@ -93,10 +111,12 @@ const HomePage = () => {
       data: formBody.join("&"),
     })
       .then((response) => {
-        console.log(response);
+        setApimTokenObj(response.data);
+        setapimReq(true);
       })
       .catch((e) => {
         console.error(e);
+        setHasAuthenticationErrors(true);
       });
   };
 
@@ -105,6 +125,7 @@ const HomePage = () => {
   };
 
   const handleLogout = () => {
+    setapimReq();
     signOut();
   };
 
@@ -129,18 +150,38 @@ const HomePage = () => {
   }
   return (
     <>
-      <Default isLoading={state.isLoading} hasErrors={hasAuthenticationErrors}>
+      <Default
+        isLoading={state.isLoading}
+        isApimToken={apimReq}
+        hasErrors={hasAuthenticationErrors}
+      >
         {state.isAuthenticated ? (
           <div className="content">
-            <Main derivedResponse={derivedAuthenticationState} />
-            <button
-              className="btn primary mt-4"
-              onClick={() => {
-                handleLogout();
-              }}
-            >
-              Logout
-            </button>
+            <BrowserRouter>
+              <Switch>
+                <Route
+                  path={PAGES.CHILD_COMPONENT}
+                  render={({ match, location, history }) => {
+                    return (
+                      <>
+                        {apimTokenObj ? (
+                          <Main
+                            page={location.pathname}
+                            derivedResponse={derivedAuthenticationState}
+                          />
+                        ) : (
+                          <LoadingScreen
+                            message={"Waiting for APIM token ..."}
+                          />
+                        )}
+                      </>
+                    );
+                  }}
+                />
+                <Redirect exact from="/" to={PAGES.CHILD_COMPONENT} />
+                <Route component={NotFound} />
+              </Switch>
+            </BrowserRouter>
           </div>
         ) : (
           <div className={classes.pageStyle}>
@@ -176,12 +217,13 @@ const HomePage = () => {
                           ></img>
                         </Grid>
                         <Grid item xs={12} sx={{ pb: 2 }}>
-                          <Typography variant="h4">Asgardeo Auth</Typography>
+                          <Typography variant="h4">{APP_NAME}</Typography>
                         </Grid>
                         {/* Handle Error authenticationError */}
                         <Grid item xs={12}>
                           <Button
                             variant="contained"
+                            color="secondary"
                             onClick={() => {
                               handleLogin();
                             }}

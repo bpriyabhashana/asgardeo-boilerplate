@@ -2,21 +2,28 @@ import logo from "./logo.svg";
 import "./App.css";
 import { AuthProvider } from "@asgardeo/auth-react";
 import { authConfig } from "./Config";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
+import ApimTokenStore from "./store/ApimTokenStore";
 
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <AuthProvider config={authConfig}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route component={NotFound} />
-        </Switch>
-      </Router>
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <AuthProvider config={authConfig}>
+        <ApimTokenStore>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" component={HomePage} />
+              <Route component={NotFound} />
+            </Switch>
+          </BrowserRouter>
+        </ApimTokenStore>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
