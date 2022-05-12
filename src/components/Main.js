@@ -15,7 +15,7 @@ import {
   ListItemIcon,
   experimentalStyled,
 } from "@mui/material";
-import { ChevronLeft, AccountCircle } from "@mui/icons-material";
+import { ChevronLeft, AccountCircle, AppsOutlined } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import { PowerSettingsNew } from "@mui/icons-material";
@@ -28,6 +28,7 @@ import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 import ChildComponent from "./ChildComponent";
 import NotFound from "../pages/NotFound";
 import ChildComponent2 from "./ChildComponent2";
+import LaunchPad from "./LaunchPad";
 
 const MainLayoutRoot = experimentalStyled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -161,6 +162,11 @@ const Main = (props) => {
                     {props.derivedResponse?.decodedIDTokenPayload.email}
                   </Typography>
                 </Grid>
+
+                <Grid item style={{ cursor: "pointer", paddingTop: "10px" }}>
+                  <LaunchPad />
+                </Grid>
+
                 <Grid item onClick={handleClick} style={{ cursor: "pointer" }}>
                   {props.authData ? (
                     <Avatar

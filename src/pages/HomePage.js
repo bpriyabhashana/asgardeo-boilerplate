@@ -60,12 +60,8 @@ const HomePage = () => {
   const [apimTokenObj, setApimTokenObj] = useContext(Context);
   const [apimReq, setapimReq] = useState(false);
 
-  useEffect(() => {
-    if (!state?.isAuthenticated) {
-      return;
-    }
-
-    (async () => {
+  useEffect(async () => {
+    if (state?.isAuthenticated) {
       const basicUserInfo = await getBasicUserInfo();
       const idToken = await getIDToken();
       const decodedIDToken = await getDecodedIDToken();
@@ -82,8 +78,11 @@ const HomePage = () => {
       // setTimeout(() => {
       //   getAPIMToken(idToken);
       // }, 5000);
-      getAPIMToken(idToken);
-    })();
+      await getAPIMToken(idToken);
+    }
+    // else if (sessionStorage.getItem("isInitLogin") === null) {
+    //   signIn().catch(() => setHasAuthenticationErrors(true));
+    // }
   }, [state.isAuthenticated]);
 
   const getAPIMToken = async (idToken) => {
@@ -121,11 +120,10 @@ const HomePage = () => {
   };
 
   const handleLogin = () => {
-    signIn().catch(() => setHasAuthenticationErrors(true));
+    signIn();
   };
 
   const handleLogout = () => {
-    setapimReq();
     signOut();
   };
 
