@@ -10,7 +10,10 @@ import {
   Hidden,
   IconButton,
   Menu,
+  MenuList,
   MenuItem,
+  ListItemAvatar,
+  ListItemText,
   ListItemIcon,
   Toolbar,
   Typography,
@@ -23,6 +26,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import HelpIcon from "@mui/icons-material/Help";
+import { PowerSettingsNew } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 import { APP_CONFIG, APP_NAME } from "../Config";
@@ -98,6 +102,9 @@ const MainNavbar = ({
             </Typography>
             {/* </RouterLink> */}
             <Box sx={{ flexGrow: 1 }} />
+            <Typography variant="body2" display="block">
+              {context.userName}
+            </Typography>
             <IconButton
               onClick={handleClickAccount}
               size="small"
@@ -119,6 +126,7 @@ const MainNavbar = ({
               )}
             </IconButton>
             <Menu
+              style={{ zIndex: 10001 }}
               anchorEl={accountAnchorEl}
               open={openAccount}
               onClose={handleCloseAccount}
@@ -153,7 +161,41 @@ const MainNavbar = ({
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-              <Tooltip title={context.userName} arrow>
+              <MenuList>
+                <Tooltip title={context.userName} arrow>
+                  <NavLink
+                    to={
+                      APP_CONFIG.PAGES.MANAGE +
+                      "?view=" +
+                      APP_CONFIG.QUERY_VALUES.ACCOUNT
+                    }
+                  >
+                    <MenuItem>
+                      <ListItemAvatar>
+                        {context.userName ? (
+                          <Avatar
+                            title={context.userName}
+                            src={context.userName}
+                          />
+                        ) : (
+                          <Avatar>
+                            <PersonIcon />
+                          </Avatar>
+                        )}
+                      </ListItemAvatar>
+                      <ListItemText primary={context.userName} />
+                    </MenuItem>
+                  </NavLink>
+                </Tooltip>
+                <Divider />
+                <MenuItem onClick={context.handleLogout}>
+                  <ListItemIcon>
+                    <PowerSettingsNew color="primary" fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary="Logout" />
+                </MenuItem>
+              </MenuList>
+              {/* <Tooltip title={context.userName} arrow>
                 <NavLink
                   to={
                     APP_CONFIG.PAGES.MANAGE +
@@ -178,16 +220,9 @@ const MainNavbar = ({
                   </MenuItem>
                 </NavLink>
               </Tooltip>
-              <Divider />
-              {/* <Link href={APP_CONFIG.URL.USER_GUIDE} target="_blank" rel="noreferrer" underline="none">
-                <MenuItem>
-                  <ListItemIcon>
-                    <FileTextIcon fontSize="small" />
-                  </ListItemIcon>
-                  User Guide
-                </MenuItem>
-              </Link> */}
-              <Link
+              <Divider /> */}
+
+              {/* <Link
                 href={getGmailMailTo(
                   APP_CONFIG.EMAILS.GET_HELP_EMAIL_TO,
                   APP_CONFIG.EMAILS.GET_HELP_EMAIL_SUBJECT
@@ -208,7 +243,7 @@ const MainNavbar = ({
                   <HelpIcon fontSize="small" />
                 </ListItemIcon>
                 Logout
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </Toolbar>
         </AppBar>

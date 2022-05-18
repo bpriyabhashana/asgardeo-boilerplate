@@ -1,6 +1,6 @@
 export const APP_NAME = "Internal Apps";
 
-export const APP_CONTEXT = "/listapp";
+export const APP_CONTEXT = "/internal";
 
 export const AUTH_CONFIG = {
   signInRedirectURL: `${process.env.REACT_APP_BASE_URL}`,

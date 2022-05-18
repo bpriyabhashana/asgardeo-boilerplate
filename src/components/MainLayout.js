@@ -156,102 +156,25 @@ const MainLayout = (props) => {
       </div>
       <MainLayoutWrapper onMouseOver={handleDrawerHoverOut}>
         <MainLayoutContainer>
-          {appInitialized && (
-            <MainLayoutContent>
-              <Switch>
-                <Route
-                  exact
-                  path={APP_CONFIG.PAGES.HOME}
-                  render={({ match, location, history }) => {
-                    return (
-                      <>
-                        {/* // add content here */}
-                        test
-                      </>
-                    );
-                  }}
-                />
-                {/* <Route
-                  exact
-                  path={APP_CONFIG.PAGES.RECURRING + "/:linkGroupId"}
-                  render={({ match, location, history }) => {
-                    let queryParams = queryString.parse(location.search);
-                    let modeQueryParam = queryParams.mode;
-                    // If {app_url/page?mode=edit} it will go to edit mode
-                    let isEdit =
-                      modeQueryParam === APP_CONFIG.QUERY_VALUES.EDIT;
+          <MainLayoutContent>
+            <Switch>
+              <Route
+                exact
+                path={APP_CONFIG.PAGES.HOME}
+                render={({ match, location, history }) => {
+                  return <>{/* // add home page content here */}</>;
+                }}
+              />
 
-                    return (
-                      <>
-                        <RecurringPage
-                          isEdit={isEdit}
-                          linkGroupId={match.params.linkGroupId}
-                          handleSnackbar={handleSnackbar}
-                        />
-                      </>
-                    );
-                  }}
-                /> */}
-                {/* <Route exact path={APP_CONFIG.PAGES.COLLECTIONS + "/:collectionId"} render={({ match, location, history }) => {
-                let collectionId = match.params.collectionId;
-                return (
-                  <>{Number.isNaN(collectionId) ? <NotFound /> : <Collections
-                    view={location.pathname} collectionId={Number(collectionId)}
-                    handleSnackbar={handleSnackbar} />}
+              <Redirect
+                exact
+                from={APP_CONFIG.PAGES.APP}
+                to={APP_CONFIG.PAGES.HOME}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </MainLayoutContent>
 
-                  </>
-                );
-              }} />
-              <Route exact path={APP_CONFIG.PAGES.COLLECTIONS} render={({ match, location, history }) => {
-                return (
-                  <>
-                    <Collections
-                      view={location.pathname}
-                      handleSnackbar={handleSnackbar} />
-                  </>
-                );
-              }} />
-              <Route exact path={APP_CONFIG.PAGES.FAVOURITES} render={({ match, location, history }) => {
-                return (
-                  <>
-                    <Favourites view={location.pathname} handleSnackbar={handleSnackbar} />
-                  </>
-                );
-              }} />
-              <Route exact path={APP_CONFIG.PAGES.MANAGE} render={({ match, location, history }) => {
-                let queryParams = queryString.parse(location.search);
-                // ?view=
-                let viewQueryParam = queryParams.view;
-                let view = "1";
-                if (viewQueryParam) {
-                  switch (viewQueryParam) {
-                    case APP_CONFIG.QUERY_VALUES.TAGS:
-                      view = "2";
-                      break;
-                    case APP_CONFIG.QUERY_VALUES.ROLES:
-                      view = "3";
-                      break;
-                    default:
-                      view = "1";
-                      break;
-                  }
-                }
-
-                return (
-                  <>
-                    <ManagePage view={view} handleSnackbar={handleSnackbar} />
-                  </>
-                );
-              }} /> */}
-                <Redirect
-                  exact
-                  from={APP_CONFIG.PAGES.APP}
-                  to={APP_CONFIG.PAGES.HOME}
-                />
-                <Route component={NotFound} />
-              </Switch>
-            </MainLayoutContent>
-          )}
           {errorDialog && (
             <ErrorDialog
               open={Boolean(errorDialog)}

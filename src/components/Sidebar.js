@@ -29,16 +29,16 @@ const items = [
     icon: () => <HomeIcon />,
     title: "Home",
   },
-  {
-    href: APP_CONFIG.PAGES.COLLECTIONS,
-    icon: () => <ArchiveIcon />,
-    title: "Collections",
-  },
-  {
-    href: APP_CONFIG.PAGES.FAVOURITES,
-    icon: () => <FavoriteIcon />,
-    title: "Favourites",
-  },
+  // {
+  //   href: APP_CONFIG.PAGES.COLLECTIONS,
+  //   icon: () => <ArchiveIcon />,
+  //   title: "Collections",
+  // },
+  // {
+  //   href: APP_CONFIG.PAGES.FAVOURITES,
+  //   icon: () => <FavoriteIcon />,
+  //   title: "Favourites",
+  // },
 ];
 
 const drawerWidth = 240;
