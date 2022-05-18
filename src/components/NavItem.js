@@ -25,9 +25,9 @@ const NavItem = (props) => {
     root: {
       "&$selected": {
         backgroundColor: `${theme.palette.primary.main} !important`,
-        color: `${theme.palette.primary.contrastText} !important`,
+        color: `${theme.palette.primary.contrastText}`,
         "& .MuiListItemIcon-root": {
-          color: `${theme.palette.primary.contrastText} `,
+          color: `${theme.palette.primary.contrastText}`,
         },
       },
       "&$selected:hover": {
@@ -37,10 +37,12 @@ const NavItem = (props) => {
           color: `${theme.palette.primary.contrastText}`,
         },
       },
-      "&:focus, &:hover, &:visited, &:link, &:active": {
-        textDecoration: "none",
-      },
-      color: `${theme.palette.primary.main} !important`,
+      // "&:hover": {
+      //   backgroundColor: "blue",
+      //   "& .MuiListItemIcon-root": {
+      //     color: "white"
+      //   }
+      // }
     },
     selected: {},
   })(MuiListItemButton);
@@ -58,7 +60,7 @@ const NavItem = (props) => {
   useEffect(() => {}, [props.selected]);
 
   return (
-    <RouterLink style={{ textDecoration: "none" }} to={href}>
+    <RouterLink to={href}>
       <ListItem
         sx={{
           maxWidth: 300,
@@ -68,7 +70,6 @@ const NavItem = (props) => {
         }}
       >
         <ListItemButton
-          style={{ marginLeft: "10px" }}
           selected={props.selected}
           sx={{ borderRadius: 1, mr: 1, mb: 0.5, mt: 0.5 }}
         >
@@ -81,7 +82,6 @@ const NavItem = (props) => {
                   component="span"
                   variant="body1"
                   noWrap
-                  underline="none"
                 >
                   {title}
                 </Typography>

@@ -1,30 +1,26 @@
-import logo from "./logo.svg";
-import "./App.css";
 import { AuthProvider } from "@asgardeo/auth-react";
-import { authConfig } from "./Config";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
-import theme from "./theme";
-import ApimTokenStore from "./store/ApimTokenStore";
-
+import GlobalStyles from "./components/GlobalStyles";
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
+import theme from "./theme";
+import { AUTH_CONFIG } from "./Config";
 
-function App() {
+const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider config={authConfig}>
-        <ApimTokenStore>
-          <BrowserRouter>
-            <Switch>
-              <Route path="/" component={HomePage} />
-              <Route component={NotFound} />
-            </Switch>
-          </BrowserRouter>
-        </ApimTokenStore>
+      <GlobalStyles />
+      <AuthProvider config={AUTH_CONFIG}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" component={HomePage} />
+            <Route component={NotFound} />
+          </Switch>
+        </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

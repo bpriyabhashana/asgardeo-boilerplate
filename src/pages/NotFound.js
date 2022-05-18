@@ -1,89 +1,54 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import { makeStyles } from "@mui/styles";
-import FOOTER_LOGOS from "../images/footer.png";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+// import { Helmet } from "react-helmet";
+import { APP_CONFIG, APP_NAME } from "../Config";
+import { Box, Container, Link, Typography } from "@mui/material";
 
-const useStyle = makeStyles(() => ({
-  pageStyle: {
-    width: "90vw",
-    height: "90vh",
-    display: "table-cell",
-    textAlign: "center",
-    verticalAlign: "middle",
-    // backgroundColor: "rgb(244, 246, 248)",
-    padding: 20,
-  },
-}));
-
-const NotFound = () => {
-  const classes = useStyle();
-  const history = useHistory();
-  return (
-    <div className={classes.pageStyle}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          justifyContent: "center",
-        }}
-      >
-        <Container maxWidth="md">
-          <Box
-            sx={{
-              p: 2,
+const NotFound = () => (
+  <>
+    {/* <Helmet> */}
+    <title>404 | {APP_NAME}</title>
+    {/* </Helmet> */}
+    <Box
+      sx={{
+        backgroundColor: "background.default",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        justifyContent: "center",
+      }}
+    >
+      <Container maxWidth="md">
+        <Typography align="center" color="textPrimary" variant="h1">
+          404: The page you are looking for isn’t here
+        </Typography>
+        <Typography
+          align="center"
+          color="textPrimary"
+          variant="subtitle2"
+          gutterBottom
+        >
+          You either tried a questionable route or you came here by mistake.
+          Whichever it is, try using the navigation or click the link below.
+        </Typography>
+        <Link href={APP_CONFIG.PAGES.APP}>
+          <Typography align="center" color="textPrimary" variant="subtitle2">
+            Navigate to Home Page
+          </Typography>
+        </Link>
+        {/* <Box sx={{ textAlign: 'center' }}>
+          <img
+            alt="Under development"
+            src="/static/images/undraw_page_not_found_su7k.svg"
+            style={{
+              marginTop: 50,
+              display: 'inline-block',
+              maxWidth: '100%',
+              width: 560
             }}
-          >
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              spacing={2}
-            >
-              <Grid item xs={12}>
-                <Typography align="center" color="textPrimary" variant="h1">
-                  404: The page you are looking for isn’t here
-                </Typography>
-                <Typography
-                  align="center"
-                  color="textPrimary"
-                  variant="subtitle2"
-                  gutterBottom
-                >
-                  You either tried a questionable route or you came here by
-                  mistake. Whichever it is, try using the navigation or click
-                  the button below.
-                </Typography>
-              </Grid>
-              <Button
-                size="small"
-                variant="outlined"
-                className="btn primary"
-                onClick={() => {
-                  history.push("/");
-                }}
-              >
-                Go back to home
-              </Button>
-            </Grid>
-          </Box>
-        </Container>
-      </Box>
-
-      <img width="60" src={FOOTER_LOGOS} className="footer-image" />
-    </div>
-  );
-};
+          />
+        </Box> */}
+      </Container>
+    </Box>
+  </>
+);
 
 export default NotFound;
