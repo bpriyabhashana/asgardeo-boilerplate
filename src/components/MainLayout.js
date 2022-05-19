@@ -179,6 +179,14 @@ const MainLayout = (props) => {
                 }}
               />
 
+              <Route
+                exact
+                path={APP_CONFIG.PAGES.MANAGE}
+                render={({ match, location, history }) => {
+                  return <>Manage page content</>;
+                }}
+              />
+
               <Redirect
                 exact
                 from={APP_CONFIG.PAGES.APP}

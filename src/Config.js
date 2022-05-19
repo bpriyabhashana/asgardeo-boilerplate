@@ -34,13 +34,6 @@ export const APP_CONFIG = {
 
 export const OAUTH_CONFIG = {
   SKIP_TOKEN_EXCHANGE: false,
-  BEARER_TOKEN: "TODO",
-  TOKEN_APIS: {
-    // ASGARDEO_TOKEN_EXCHANGE: "https://avishkaariyaratne.choreoapis.dev/tokenendpoint/1.0.0/tokenExchange",
-    ASGARDEO_TOKEN_EXCHANGE:
-      "https://staging-apps.private.wso2.com/oauth2/oauth2/token",
-    AUTH_HEADER: "Basic TODO",
-  },
 };
 
 export const APIM_HEADERS = {
