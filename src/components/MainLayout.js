@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import useHttp from "../utils/http";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { experimentalStyled } from "@mui/material";
+import { Button, experimentalStyled } from "@mui/material";
 // import { Button } from "@material-ui/core";
 import MainNavbar from "./MainNavbar";
 import SideBar from "./Sidebar";
 import NotFound from "../pages/NotFound";
 import { APP_CONFIG } from "../Config.js";
 import Snackbars from "./ui/Snackbars";
-import { setUserAccessMap } from "../utils/oauth";
+import { setUserAccessMap, getToken, getIdToken } from "../utils/oauth";
 import ErrorDialog from "./dialog/ErrorDialog";
 
 const MainLayoutRoot = experimentalStyled("div")(({ theme }) => ({
@@ -118,6 +118,7 @@ const MainLayout = (props) => {
   useEffect(() => {
     setPage(props.page);
   }, [props.page]);
+
   // useEffect(() => {
   //   switch (reqExtra) {
   //     case APP_CONFIG.APIS.INITIALIZE_APP:
@@ -162,7 +163,19 @@ const MainLayout = (props) => {
                 exact
                 path={APP_CONFIG.PAGES.HOME}
                 render={({ match, location, history }) => {
-                  return <>{/* // add home page content here */}</>;
+                  return (
+                    <>
+                      {/* // add home page content here */}
+                      <Button
+                        onClick={() => {
+                          console.log(getIdToken());
+                          console.log(getToken());
+                        }}
+                      >
+                        test
+                      </Button>
+                    </>
+                  );
                 }}
               />
 

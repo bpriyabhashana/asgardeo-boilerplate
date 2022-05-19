@@ -20,8 +20,8 @@ export const APP_CONFIG = {
     MANAGE: APP_CONTEXT + "/manage",
   },
   EMAILS: {
-    GET_HELP_EMAIL_TO: "internal-apps-group@wso2.com,avishka@wso2.com",
-    GET_HELP_EMAIL_SUBJECT: "[HELP] Dashboard Listing App",
+    GET_HELP_EMAIL_TO: "internal-apps-group@wso2.com",
+    GET_HELP_EMAIL_SUBJECT: `[HELP] ${APP_NAME}`,
   },
   QUERY_VALUES: {
     VIEW: "view",
@@ -33,7 +33,7 @@ export const APP_CONFIG = {
 };
 
 export const OAUTH_CONFIG = {
-  SKIP_TOKEN_EXCHANGE: true,
+  SKIP_TOKEN_EXCHANGE: false,
   BEARER_TOKEN: "TODO",
   TOKEN_APIS: {
     // ASGARDEO_TOKEN_EXCHANGE: "https://avishkaariyaratne.choreoapis.dev/tokenendpoint/1.0.0/tokenExchange",
@@ -41,6 +41,19 @@ export const OAUTH_CONFIG = {
       "https://staging-apps.private.wso2.com/oauth2/oauth2/token",
     AUTH_HEADER: "Basic TODO",
   },
+};
+
+export const APIM_HEADERS = {
+  Authorization:
+    "Basic " +
+    btoa(
+      `${process.env.REACT_APP_APIM_IDP_CLIENT_ID}:${process.env.REACT_APP_APIM_IDP_CLIENT_SECRET}`
+    ),
+  "Content-Type": "application/x-www-form-urlencoded",
+};
+
+export const APIM_CLIENT = {
+  APIM_TOKEN_ENDPOINT: `${process.env.REACT_APP_APIM_TOKEN_ENDPOINT}`,
 };
 
 // ------------ old implementation ---------

@@ -1,4 +1,4 @@
-import { OAUTH_CONFIG } from "../Config";
+import { OAUTH_CONFIG, APIM_HEADERS, APIM_CLIENT } from "../Config";
 export const DEFINED_ACCESS = {
   VIEW: { name: "VIEW", level: 0 },
   EDIT: { name: "EDIT", level: 1 },
@@ -182,11 +182,7 @@ export async function getNewAPIToken(callback) {
     return null;
   }
 
-  let headers = {
-    // "token": idToken
-    Authorization: OAUTH_CONFIG.TOKEN_APIS.AUTH_HEADER,
-    "Content-Type": "application/x-www-form-urlencoded",
-  };
+  let headers = APIM_HEADERS;
   let grantType =
     encodeURIComponent("grant_type") +
     "=" +
@@ -197,7 +193,7 @@ export async function getNewAPIToken(callback) {
   let formBody = [grantType, assertion];
 
   try {
-    const fetchResult = fetch(OAUTH_CONFIG.TOKEN_APIS.ASGARDEO_TOKEN_EXCHANGE, {
+    const fetchResult = fetch(APIM_CLIENT.APIM_TOKEN_ENDPOINT, {
       method: "POST",
       headers: headers,
       body: formBody.join("&"),

@@ -33,16 +33,6 @@ const items = [
     icon: () => <InboxIcon />,
     title: "Home",
   },
-  {
-    href: PAGES.PAGE_TWO,
-    icon: () => <MailIcon />,
-    title: "Collections",
-  },
-  // {
-  //   href: "",
-  //   icon: () => <HeartIcon />,
-  //   title: "Favourites",
-  // },
 ];
 
 const openedMixin = (theme) => ({
