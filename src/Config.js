@@ -10,28 +10,7 @@ export const AUTH_CONFIG = {
   scope: ["openid", "FinanceMIS"],
 };
 
-export const APP_CONFIG = {
-  PAGES: {
-    APP: APP_CONTEXT,
-    HOME: APP_CONTEXT + "/home",
-    RECURRING: APP_CONTEXT + "/recurring",
-    COLLECTIONS: APP_CONTEXT + "/collections",
-    FAVOURITES: APP_CONTEXT + "/favourites",
-    MANAGE: APP_CONTEXT + "/manage",
-  },
-  EMAILS: {
-    GET_HELP_EMAIL_TO: "internal-apps-group@wso2.com",
-    GET_HELP_EMAIL_SUBJECT: `[HELP] ${APP_NAME}`,
-  },
-  QUERY_VALUES: {
-    VIEW: "view",
-    EDIT: "edit",
-    ACCOUNT: "account",
-    TAGS: "tags",
-    ROLES: "roles",
-  },
-};
-
+// If APIM token not necessary set value to false
 export const OAUTH_CONFIG = {
   SKIP_TOKEN_EXCHANGE: false,
 };
@@ -47,6 +26,25 @@ export const APIM_HEADERS = {
 
 export const APIM_CLIENT = {
   APIM_TOKEN_ENDPOINT: `${process.env.REACT_APP_APIM_TOKEN_ENDPOINT}`,
+};
+
+export const APP_CONFIG = {
+  PAGES: {
+    APP: APP_CONTEXT,
+    HOME: APP_CONTEXT + "/home",
+    MANAGE: APP_CONTEXT + "/manage",
+  },
+  EMAILS: {
+    GET_HELP_EMAIL_TO: "internal-apps-group@wso2.com",
+    GET_HELP_EMAIL_SUBJECT: `[HELP] ${APP_NAME}`,
+  },
+  QUERY_VALUES: {
+    VIEW: "view",
+    EDIT: "edit",
+    ACCOUNT: "account",
+    TAGS: "tags",
+    ROLES: "roles",
+  },
 };
 
 // ------------ old implementation ---------

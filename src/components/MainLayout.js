@@ -165,7 +165,7 @@ const MainLayout = (props) => {
                 render={({ match, location, history }) => {
                   return (
                     <>
-                      {/* // add home page content here */}
+                      Add home page content here
                       <Button
                         onClick={() => {
                           console.log(getIdToken());
