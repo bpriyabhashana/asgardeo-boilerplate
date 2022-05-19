@@ -29,10 +29,11 @@ import HelpIcon from "@mui/icons-material/Help";
 import { PowerSettingsNew } from "@mui/icons-material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { APP_CONFIG, APP_NAME } from "../Config";
+import { APP_CONFIG, APP_NAME, USER_CUSTOM_CONFIGS } from "../Config";
 import Logo from "./Logo";
 import UserContext from "../context/user-context";
 import { getGmailMailTo } from "../utils/formatting";
+import LaunchPad from "./launchpad/LaunchPad";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -105,6 +106,7 @@ const MainNavbar = ({
             <Typography variant="body2" display="block">
               {context.userName}
             </Typography>
+            {USER_CUSTOM_CONFIGS.LAUNCHPAD ? <LaunchPad /> : null}
             <IconButton
               onClick={handleClickAccount}
               size="small"
@@ -195,55 +197,6 @@ const MainNavbar = ({
                   <ListItemText primary="Logout" />
                 </MenuItem>
               </MenuList>
-              {/* <Tooltip title={context.userName} arrow>
-                <NavLink
-                  to={
-                    APP_CONFIG.PAGES.MANAGE +
-                    "?view=" +
-                    APP_CONFIG.QUERY_VALUES.ACCOUNT
-                  }
-                >
-                  <MenuItem sx={{ pt: 1, pb: 1 }}>
-                    <Stack direction="row" alignItems="center">
-                      <Avatar alt={context.userName} />
-                      <Typography
-                        sx={{
-                          maxWidth: 220,
-                          textOverflow: "ellipsis",
-                          overflow: "hidden",
-                        }}
-                        variant="body1"
-                      >
-                        {context.userName}
-                      </Typography>
-                    </Stack>
-                  </MenuItem>
-                </NavLink>
-              </Tooltip>
-              <Divider /> */}
-
-              {/* <Link
-                href={getGmailMailTo(
-                  APP_CONFIG.EMAILS.GET_HELP_EMAIL_TO,
-                  APP_CONFIG.EMAILS.GET_HELP_EMAIL_SUBJECT
-                )}
-                target="_blank"
-                rel="noreferrer"
-                underline="none"
-              >
-                <MenuItem>
-                  <ListItemIcon>
-                    <HelpIcon fontSize="small" />
-                  </ListItemIcon>
-                  Get Help
-                </MenuItem>
-              </Link>
-              <MenuItem onClick={context.handleLogout}>
-                <ListItemIcon>
-                  <HelpIcon fontSize="small" />
-                </ListItemIcon>
-                Logout
-              </MenuItem> */}
             </Menu>
           </Toolbar>
         </AppBar>
