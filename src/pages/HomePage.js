@@ -12,6 +12,7 @@ import {
   setRefreshTokenFunction,
   getNewAPIToken,
   getToken,
+  getAuthError,
 } from "../utils/oauth";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {
@@ -257,32 +258,50 @@ const HomePage = () => {
                         <Typography variant="h2">{APP_NAME}</Typography>
                       </Grid>
                       {/* Handle Error authenticationError */}
-                      <Grid item xs={12}>
-                        <LoadingButton
-                          id="login"
-                          onClick={() => {
-                            handleLogin();
-                          }}
-                          variant="contained"
-                          color="secondary"
-                          loading={getIsInitLogin()}
-                          loadingPosition="center"
-                        >
-                          Log In
-                        </LoadingButton>
-                      </Grid>
-                      {getIsInitLogin() ? (
+                      {console.log(getAuthError())}
+                      {getAuthError() ? (
                         <Grid item xs={12}>
-                          <Typography variant="caption">
-                            Redirecting to Asgardeo...
-                          </Typography>
+                          <LoadingButton
+                            id="login"
+                            onClick={() => {
+                              handleLogout();
+                            }}
+                            variant="outlined"
+                            color="secondary"
+                          >
+                            Retry
+                          </LoadingButton>
                         </Grid>
                       ) : (
-                        <Grid item xs={12}>
-                          <Typography variant="caption">
-                            {loggedOutStatus}
-                          </Typography>
-                        </Grid>
+                        <>
+                          <Grid item xs={12}>
+                            <LoadingButton
+                              id="login"
+                              onClick={() => {
+                                handleLogin();
+                              }}
+                              variant="contained"
+                              color="secondary"
+                              loading={getIsInitLogin()}
+                              loadingPosition="center"
+                            >
+                              Log In
+                            </LoadingButton>
+                          </Grid>
+                          {getIsInitLogin() ? (
+                            <Grid item xs={12}>
+                              <Typography variant="caption">
+                                Redirecting to Asgardeo...
+                              </Typography>
+                            </Grid>
+                          ) : (
+                            <Grid item xs={12}>
+                              <Typography variant="caption">
+                                {loggedOutStatus}
+                              </Typography>
+                            </Grid>
+                          )}
+                        </>
                       )}
                     </Grid>
                   </Box>

@@ -14,6 +14,7 @@ var refreshTokenFunction = null;
 var userAccess = DEFINED_ACCESS.VIEW;
 var userRolesToAccessMap = {};
 var apiToken = null;
+var authError = false;
 
 export async function setIdToken(token) {
   idToken = token;
@@ -21,6 +22,14 @@ export async function setIdToken(token) {
 
 export function getIdToken() {
   return idToken;
+}
+
+export function setAuthError(error) {
+  authError = error;
+}
+
+export function getAuthError() {
+  return authError;
 }
 
 export async function refreshToken(callback) {
@@ -188,7 +197,7 @@ export async function getNewAPIToken(callback) {
     "=" +
     encodeURIComponent("urn:ietf:params:oauth:grant-type:jwt-bearer");
   let assertion =
-    encodeURIComponent("assertion") + "=" + encodeURIComponent(idToken);
+    encodeURIComponent("assertion") + "=" + encodeURIComponent("idToken");
 
   let formBody = [grantType, assertion];
 
@@ -207,6 +216,7 @@ export async function getNewAPIToken(callback) {
         if (accessToken) {
           getNewAPITokenTries = 0;
           setToken(accessToken);
+          setAuthError(false);
           callback && callback();
         } else {
           //Checking for callback avoids infinite looping
@@ -217,12 +227,17 @@ export async function getNewAPIToken(callback) {
         }
       }
     } else {
+      if (response.status === 400) {
+        setAuthError(true);
+        console.log("TEST");
+      }
       console.error(
         "Error when calling token endpoint! ",
         response.status,
         " ",
         response.statusText
       );
+
       switch (response.status) {
         case 404:
           return "Looks like the services of the application are under maintenance at the moment. Please try again in a few minutes.";
