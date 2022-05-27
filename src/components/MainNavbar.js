@@ -104,7 +104,8 @@ const MainNavbar = ({
             {/* </RouterLink> */}
             <Box sx={{ flexGrow: 1 }} />
             <Typography variant="body2" display="block">
-              {context.userName}
+              {/* {context.userName} */}
+              User Name
             </Typography>
             {USER_CUSTOM_CONFIGS.LAUNCHPAD ? <LaunchPad /> : null}
             <IconButton
@@ -164,7 +165,7 @@ const MainNavbar = ({
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <MenuList>
-                <Tooltip title={context.userName} arrow>
+                <Tooltip title={"context.userName"} arrow>
                   <NavLink
                     to={
                       APP_CONFIG.PAGES.MANAGE +
@@ -174,7 +175,7 @@ const MainNavbar = ({
                   >
                     <MenuItem>
                       <ListItemAvatar>
-                        {context.userName ? (
+                        {/* {context.userName ? (
                           <Avatar
                             title={context.userName}
                             src={context.userName}
@@ -183,14 +184,14 @@ const MainNavbar = ({
                           <Avatar>
                             <PersonIcon />
                           </Avatar>
-                        )}
+                        )} */}
                       </ListItemAvatar>
-                      <ListItemText primary={context.userName} />
+                      <ListItemText primary={"context.userName"} />
                     </MenuItem>
                   </NavLink>
                 </Tooltip>
                 <Divider />
-                <MenuItem onClick={context.handleLogout}>
+                <MenuItem>
                   <ListItemIcon>
                     <PowerSettingsNew color="primary" fontSize="small" />
                   </ListItemIcon>

@@ -29,155 +29,155 @@ import UserContext from "../context/user-context";
 import NotFound from "./NotFound";
 
 const HomePage = () => {
-  const {
-    state,
-    signIn,
-    signOut,
-    getBasicUserInfo,
-    getIDToken,
-    getDecodedIDToken,
-    refreshAccessToken,
-  } = useAuthContext();
-  const [loggedOutStatus, setLoggedOutStatus] = useState("");
-  const [loadApp, setLoadApp] = useState(false);
-  const [authenticateState, setAuthenticateState] = useState(null);
-  const [authenticationError, setAuthenticationError] = useState(false);
+  // const {
+  //   state,
+  //   signIn,
+  //   signOut,
+  //   getBasicUserInfo,
+  //   getIDToken,
+  //   getDecodedIDToken,
+  //   refreshAccessToken,
+  // } = useAuthContext();
+  // const [loggedOutStatus, setLoggedOutStatus] = useState("");
+  // const [loadApp, setLoadApp] = useState(false);
+  // const [authenticateState, setAuthenticateState] = useState(null);
+  // const [authenticationError, setAuthenticationError] = useState(false);
 
-  useEffect(() => {
-    if (getIsInitLogin()) {
-      signIn().catch((error) => {
-        setAuthenticationError(true);
-        setLoggedOutStatus("Error while logging in!");
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (getIsInitLogin()) {
+  //     signIn().catch((error) => {
+  //       setAuthenticationError(true);
+  //       setLoggedOutStatus("Error while logging in!");
+  //     });
+  //   }
+  // }, []);
 
-  const getIsInitLogin = () => {
-    if (sessionStorage.getItem("isInitLogin") === "true") {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // const getIsInitLogin = () => {
+  //   if (sessionStorage.getItem("isInitLogin") === "true") {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
-  const getLogInStatus = () => {
-    return state.isAuthenticated && loadApp;
-  };
+  // const getLogInStatus = () => {
+  //   return state.isAuthenticated && loadApp;
+  // };
 
-  const timedOutLogoutListener = () => {
-    setTimeout(function () {
-      let logInStatus = getLogInStatus();
-      if (!logInStatus) {
-        handleLogout();
-      }
-    }, 10000);
-  };
+  // const timedOutLogoutListener = () => {
+  //   setTimeout(function () {
+  //     let logInStatus = getLogInStatus();
+  //     if (!logInStatus) {
+  //       handleLogout();
+  //     }
+  //   }, 10000);
+  // };
 
-  const setIsInitLogin = (value) => {
-    sessionStorage.setItem("isInitLogin", value);
-  };
+  // const setIsInitLogin = (value) => {
+  //   sessionStorage.setItem("isInitLogin", value);
+  // };
 
-  const handleLogin = () => {
-    setIsInitLogin("true");
-    setLoggedOutStatus("Redirecting to Asgardeo...");
-    signIn();
-  };
+  // const handleLogin = () => {
+  //   setIsInitLogin("true");
+  //   setLoggedOutStatus("Redirecting to Asgardeo...");
+  //   signIn();
+  // };
 
-  const handleLogout = () => {
-    signOut();
-    setIsInitLogin("false");
-  };
+  // const handleLogout = () => {
+  //   signOut();
+  //   setIsInitLogin("false");
+  // };
 
-  const handleRefreshToken = () => {
-    return refreshAccessToken()
-      .then(async (e) => {
-        const idToken = await getIDToken();
-        return idToken;
-      })
-      .catch((err) => {
-        if (err) {
-          let expirationJWT = authenticateState?.decodedIDTokenPayload?.exp;
-          if (!expirationJWT || Date.now() >= expirationJWT * 1000) {
-            handleLogout();
-          }
-        }
-      });
-  };
+  // const handleRefreshToken = () => {
+  //   return refreshAccessToken()
+  //     .then(async (e) => {
+  //       const idToken = await getIDToken();
+  //       return idToken;
+  //     })
+  //     .catch((err) => {
+  //       if (err) {
+  //         let expirationJWT = authenticateState?.decodedIDTokenPayload?.exp;
+  //         if (!expirationJWT || Date.now() >= expirationJWT * 1000) {
+  //           handleLogout();
+  //         }
+  //       }
+  //     });
+  // };
 
-  useEffect(() => {
-    if (state?.isAuthenticated) {
-      setRefreshTokenFunction(handleRefreshToken);
-      const getData = async () => {
-        const basicUserInfo = await getBasicUserInfo();
-        const idToken = await getIDToken();
-        const decodedIDToken = await getDecodedIDToken();
+  // useEffect(() => {
+  //   if (state?.isAuthenticated) {
+  //     setRefreshTokenFunction(handleRefreshToken);
+  //     const getData = async () => {
+  //       const basicUserInfo = await getBasicUserInfo();
+  //       const idToken = await getIDToken();
+  //       const decodedIDToken = await getDecodedIDToken();
 
-        const authState = {
-          authenticateResponse: basicUserInfo,
-          idToken: idToken.split("."),
-          decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
-          decodedIDTokenPayload: decodedIDToken,
-        };
-        setIdToken(idToken);
-        if (idToken) {
-          if (OAUTH_CONFIG.SKIP_TOKEN_EXCHANGE) {
-            setLoadApp(true);
-          } else {
-            getNewAPIToken(() => {
-              setLoadApp(true);
-            });
-          }
-        }
+  //       const authState = {
+  //         authenticateResponse: basicUserInfo,
+  //         idToken: idToken.split("."),
+  //         decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
+  //         decodedIDTokenPayload: decodedIDToken,
+  //       };
+  //       setIdToken(idToken);
+  //       if (idToken) {
+  //         if (OAUTH_CONFIG.SKIP_TOKEN_EXCHANGE) {
+  //           setLoadApp(true);
+  //         } else {
+  //           getNewAPIToken(() => {
+  //             setLoadApp(true);
+  //           });
+  //         }
+  //       }
 
-        if (basicUserInfo?.email) {
-          setUserName(basicUserInfo.email);
-        }
-        if (basicUserInfo?.groups) {
-          setUserRoles(basicUserInfo.groups);
-        }
-        setAuthenticateState(authState);
-      };
-      getData();
-    }
-  }, [state.isAuthenticated]);
+  //       if (basicUserInfo?.email) {
+  //         setUserName(basicUserInfo.email);
+  //       }
+  //       if (basicUserInfo?.groups) {
+  //         setUserRoles(basicUserInfo.groups);
+  //       }
+  //       setAuthenticateState(authState);
+  //     };
+  //     getData();
+  //   }
+  // }, [state.isAuthenticated]);
 
-  useEffect(() => {
-    // timedOutLogoutListener();
-    if (state?.isAuthenticated) {
-      const getData = async () => {
-        const basicUserInfo = await getBasicUserInfo();
-        const idToken = await getIDToken();
-        const decodedIDToken = await getDecodedIDToken();
+  // useEffect(() => {
+  //   // timedOutLogoutListener();
+  //   if (state?.isAuthenticated) {
+  //     const getData = async () => {
+  //       const basicUserInfo = await getBasicUserInfo();
+  //       const idToken = await getIDToken();
+  //       const decodedIDToken = await getDecodedIDToken();
 
-        const authState = {
-          authenticateResponse: basicUserInfo,
-          idToken: idToken.split("."),
-          decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
-          decodedIDTokenPayload: decodedIDToken,
-        };
-        setIdToken(idToken);
-        if (idToken) {
-          setLoadApp(true);
-        }
-        if (basicUserInfo?.email) {
-          setUserName(basicUserInfo.email);
-        }
-        if (basicUserInfo?.groups) {
-          setUserRoles(basicUserInfo.groups);
-        }
-        setAuthenticateState(authState);
-      };
-      getData();
-    } else {
-      if (!getToken()) {
-        setIdToken(handleRefreshToken());
-      }
-    }
-  }, []);
+  //       const authState = {
+  //         authenticateResponse: basicUserInfo,
+  //         idToken: idToken.split("."),
+  //         decodedIdTokenHeader: JSON.parse(atob(idToken.split(".")[0])),
+  //         decodedIDTokenPayload: decodedIDToken,
+  //       };
+  //       setIdToken(idToken);
+  //       if (idToken) {
+  //         setLoadApp(true);
+  //       }
+  //       if (basicUserInfo?.email) {
+  //         setUserName(basicUserInfo.email);
+  //       }
+  //       if (basicUserInfo?.groups) {
+  //         setUserRoles(basicUserInfo.groups);
+  //       }
+  //       setAuthenticateState(authState);
+  //     };
+  //     getData();
+  //   } else {
+  //     if (!getToken()) {
+  //       setIdToken(handleRefreshToken());
+  //     }
+  //   }
+  // }, []);
 
   return (
     <Fragment>
-      {AUTH_CONFIG.clientID === "" ? (
+      {/* {AUTH_CONFIG.clientID === "" ? (
         <div className="content">
           <h2>You need to update the Client ID to proceed.</h2>
           <p>
@@ -193,8 +193,8 @@ const HomePage = () => {
             for more details.
           </p>
         </div>
-      ) : state.isAuthenticated && loadApp ? (
-        <UserContext.Provider
+      ) : state.isAuthenticated && loadApp ? ( */}
+      {/* <UserContext.Provider
           value={{
             userName: getUserName(),
             userRoles: getUserRoles(),
@@ -202,25 +202,25 @@ const HomePage = () => {
             handleLogout,
             handleRefreshToken,
           }}
-        >
-          <BrowserRouter>
-            <Switch>
-              <Route
-                path={APP_CONFIG.PAGES.APP}
-                render={({ match, location, history }) => {
-                  return <MainLayout page={location.pathname} />;
-                }}
-              />
-              <Redirect exact from="/" to={APP_CONFIG.PAGES.APP} />
-              <Route component={NotFound} />
-            </Switch>
-          </BrowserRouter>
-        </UserContext.Provider>
-      ) : (
+        > */}
+      <BrowserRouter>
+        <Switch>
+          <Route
+            path={APP_CONFIG.PAGES.APP}
+            render={({ match, location, history }) => {
+              return <MainLayout page={location.pathname} />;
+            }}
+          />
+          <Redirect exact from="/" to={APP_CONFIG.PAGES.APP} />
+          <Route component={NotFound} />
+        </Switch>
+      </BrowserRouter>
+      {/* </UserContext.Provider> */}
+      {/* ) : (
         <>
-          {/* <Helmet> */}
+        
           <title>Login | {APP_NAME}</title>
-          {/* </Helmet> */}
+         
           <Box
             sx={{
               backgroundColor: "background.default",
@@ -256,7 +256,7 @@ const HomePage = () => {
                       <Grid item xs={12} sx={{ pb: 2 }}>
                         <Typography variant="h2">{APP_NAME}</Typography>
                       </Grid>
-                      {/* Handle Error authenticationError */}
+                    
                       <Grid item xs={12}>
                         <LoadingButton
                           id="login"
@@ -292,7 +292,7 @@ const HomePage = () => {
             </Container>
           </Box>
         </>
-      )}
+      )} */}
     </Fragment>
   );
 };

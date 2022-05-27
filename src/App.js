@@ -11,14 +11,14 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <AuthProvider config={AUTH_CONFIG}>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" component={HomePage} />
-            <Route component={NotFound} />
-          </Switch>
-        </BrowserRouter>
-      </AuthProvider>
+      {/* <AuthProvider config={AUTH_CONFIG}> */}
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route component={NotFound} />
+        </Switch>
+      </BrowserRouter>
+      {/* </AuthProvider> */}
     </ThemeProvider>
   );
 };
